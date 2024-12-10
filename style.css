@@ -1,1 +1,117 @@
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+/* Body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+}
+
+/* Header section */
+header {
+    background: linear-gradient(to right, #6a11cb, #2575fc); /* Attractive gradient background */
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading inside header */
+header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+/* Container with content */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+/* Section titles */
+h2, h3 {
+    font-size: 30px;
+    color: #2575fc;
+    margin-bottom: 20px;
+}
+
+/* Main content */
+p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Lists in the content */
+ul {
+    list-style-type: none;
+    margin-top: 10px;
+}
+
+ul li {
+    font-size: 18px;
+    padding: 8px;
+    background-color: #e1f7fc;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+ul li:hover {
+    background-color: #a3e3f0;
+}
+
+/* Footer section */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+    border-radius: 5px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    font-size: 16px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 28px;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    h2, h3 {
+        font-size: 24px;
+    }
+
+    ul li {
+        font-size: 16px;
+    }
+
+    footer p {
+        font-size: 14px;
+    }
+  }
